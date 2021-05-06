@@ -54,30 +54,6 @@ sudo rabbitmq-plugins enable rabbitmq_management
 sudo /etc/init.d/rabbitmq-server restart
 
 
-# Kafka 설치
-# 파일다운 및 압축해제
- tar xvzf kafka_2.13-2.7.0.tgz
-
-# Zookeeper 및 Kafka 서버 구동
-bin/zookeeper-server-start.sh config/zookeeper.properties &
-bin/kafka-server-start.sh config/server.properties &
-
-# 토픽 생성(quickstart-events) 및 확인
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic quickstart-events --partitions 1
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
-
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic quickstart-events
-Topic: quickstart-events        PartitionCount: 1       ReplicationFactor: 1    Configs: segment.bytes=1073741824
-        Topic: quickstart-events        Partition: 0    Leader: 0       Replicas: 0     Isr: 0
-
-# Producer 실행
-bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-events
-
-# Consumer 실행
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-events --from-beginning
-
-
 # Ubuntu 에 Mariadb 설치
 sudo apt-get update
 sudo apt install mariadb-server
@@ -98,24 +74,3 @@ Query OK, 0 rows affected (0.000 sec)
 Query OK, 0 rows affected (0.000 sec)
 
 
-# Kafka Connect 설치
-curl -O http://packages.confluent.io/archive/6.1/confluent-community-6.1.0.tar.gz
-tar xvf confluent-community-6.1.0.tar.gz
-
-토픽 목록확인
-/confluent-6.1.0/bin$ ./kafka-topics --bootstrap-server localhost:9092 --list
-
-# JDBC Connector 설치
-https://docs.confluent.io/5.5.1/connect/kafka-connect-jdbc/index.html 페이지 Install the connector manually 에서 Download and extract the ZIP file
-https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc?_ga=2.10066865.547915084.1620221158-1930855515.1620221158
-sudo apt install unzip
-unzip confluentinc-kafka-connect-jdbc-10.1.1.zip
-
-# Kafka connect 설정에 JDBC Connector lib 등록
-vi /home/ubuntu/confluent-6.1.0/etc/kafka/connect-distributed.properties
-최하단에 아래 내용 추가
-plugin.path=/home/ubuntu/confluentinc-kafka-connect-jdbc-10.1.1/lib
-
-# JDBC 파일 업로드
-/home/ubuntu/confluent-6.1.0/share/java/kafka 경로에 Mariadb jdbc파일 업로드
-mariadb-java-client-2.7.2.jar
