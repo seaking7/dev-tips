@@ -14,6 +14,12 @@ $ sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 # 서버 Hostname 변경
 $ sudo vim /etc/sysconfig/network
 
+
+sudo hostnamectl set-hostname sc-config-service
+sudo hostnamectl set-hostname content-service
+
+
+
 아래 항목으로 이름 추가
 
 HOSTNAME=webserver
@@ -54,23 +60,9 @@ sudo rabbitmq-plugins enable rabbitmq_management
 sudo /etc/init.d/rabbitmq-server restart
 
 
-# Ubuntu 에 Mariadb 설치
-sudo apt-get update
-sudo apt install mariadb-server
-sudo apt-get install mariadb-client
 
--- root 패스워드 설정 등
-sudo mysql_secure_installation
+# java 실행시 application.yml 파일 내용 편집
+  -Dserver.port=9999
 
--- db 접속
-sudo mysql -u root -p
-
-create user 'taekyung'@'%' identified by '패스워드';
-
-[mysql]> grant all privileges on mysql to taekyung@'%';
-Query OK, 0 rows affected (0.000 sec)
-
-[mysql]> flush privileges;
-Query OK, 0 rows affected (0.000 sec)
-
-
+ # docker 생성시 편집
+ -e "spring.rabbitmq.host=rabbitmq" 
