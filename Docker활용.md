@@ -20,6 +20,7 @@ root@86ec4436387d:/# mysql -u root -p
 PS C:\Users\User> docker stop 86ec4436387d
 86ec4436387d
 
+
 # Docker 삭제
 PS C:\Users\User> docker container rm 86ec4436387d
 86ec4436387d
@@ -42,8 +43,10 @@ REPOSITORY              TAG       IMAGE ID       CREATED         SIZE
 seaking7/sc-discovery   1.0       88757d451779   4 minutes ago   442MB
 mysql                   5.7       2c9028880e58   29 hours ago    447MB
 
+
 # Docker hub에 push
 PS C:\Users\User> docker push seaking7/sc-discovery:1.0
+
 
 # Docker 삭제하고 다시 pull
 PS C:\Users\User> docker rmi 88757d451779
@@ -53,13 +56,64 @@ Deleted: sha256:88757d451779ab4c837537981f86d425b24f1e4e0d41c2a87e8a2a144cd1506f
 PS C:\Users\User> docker image ls
 REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
 mysql        5.7       2c9028880e58   29 hours ago   447MB
+
 PS C:\Users\User> docker pull seaking7/sc-discovery:1.0
 1.0: Pulling from seaking7/sc-discovery
 45b42c59be33: Already exists                                                                                            a91c0c19c848: Already exists                                                                                            0a37071eae8e: Already exists                                                                                            4aab1c15cfb1: Already exists                                                                                            Digest: sha256:58e24f6e7e01b3b98fdba8ee0274f98db5503f55b9e0f5fc6c625beebefec64d
 Status: Downloaded newer image for seaking7/sc-discovery:1.0
 docker.io/seaking7/sc-discovery:1.0
+
 PS C:\Users\User> docker image ls
 REPOSITORY              TAG       IMAGE ID       CREATED         SIZE
 seaking7/sc-discovery   1.0       88757d451779   9 minutes ago   442MB
 mysql                   5.7       2c9028880e58   29 hours ago    447MB
 
+
+# Docker Bridge network 생성
+PS C:\Users\User> docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 ecommerce-network
+0cac82d7dbf46d9a5267e875f38161da66bad40478b515ffb0dbbc872292c42f
+PS C:\Users\User> docker network ls
+NETWORK ID     NAME                DRIVER    SCOPE
+29887f762dcc   bridge              bridge    local
+0cac82d7dbf4   ecommerce-network   bridge    local
+f7f387a9c85c   host                host      local
+e407b9406d0c   none                null      local
+
+# network 상세확인
+PS C:\Users\User> docker network inspect ecommerce-network
+[
+    {
+        "Name": "ecommerce-network",
+        "Id": "0cac82d7dbf46d9a5267e875f38161da66bad40478b515ffb0dbbc872292c42f",
+        "Created": "2021-05-15T02:42:27.8573309Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+
+# Docker 실행
+docker run -d -p 8761:8761 --network ecommerce-network \
+ -e "spring.cloud.config.uri=http://config-service:8888" \
+ --name discovery-service edowon0623/discovery-service:1.0
