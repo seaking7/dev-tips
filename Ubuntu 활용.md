@@ -47,3 +47,7 @@ sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
 # Docker 권한부여
 $ sudo usermod -a -G docker $USER
 $ sudo service docker restart
+
+
+# Zipkin 설치
+~/zipkin$ curl -sSSL https://zipkin.io/quickstart.sh | bash -s

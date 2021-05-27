@@ -10,7 +10,7 @@ PS C:\Users\User> docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true 
 PS C:\Users\User> docker logs 86ec4436387d
 2021-05-13 12:39:36+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 5.7.34-1debian10 started.
 
-# Docker 내부 접속
+# Docker 내부 접속( -it 는 interactive terminal 계속해서 터미널 사용)
 PS C:\Users\User> docker exec -it infallible_tharp /bin/bash
 root@86ec4436387d:/#
 root@86ec4436387d:/# mysql -u root -p
@@ -32,6 +32,10 @@ VOLUME /tmp
 COPY target/sc-discovery-1.0.jar Discovery.jar
 ENTRYPOINT ["java", "-jar", "Discovery.jar"]
 
+# Dockerfile 작성문법
+FROM baseImage      //베이스 이미지
+RUN command         //추가적으로 필요한 파일 다운로드
+CMD ["executable"]  //컨테이너 시작시 실행 명령어
 
 # Docker build
 C:\workspace\sc-discovery>docker build --tag seaking7/sc-discovery:1.0 .

@@ -70,7 +70,7 @@ mariadb-java-client-2.7.2.jar
 
 
 # Kafka connector 실행
-/confluent-6.1.0$ bin/connect-distributed -daemon ./etc/kafka/connect-distributed.properties
+/confluent-6.1.0$ exit
 
 
 # users 테이블 변경사항 topic 생성
@@ -139,12 +139,13 @@ kafka 서버 /etc/hosts 설정
 컨슈머서버 /etc/hosts 설정
 
 
-http://13.124.188.34:8083/connectors 으로 POST메소드 호출
+
+http://13.209.136.250:8083/connectors/ 으로 POST메소드 호출
 {
     "name":"my-content-sink-connect",
     "config": {
         "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
-        "connection.url" : "jdbc:mysql://13.124.188.34:3306/execute",
+        "connection.url" : "jdbc:mysql://13.209.136.250:3306/execute",
         "connection.user": "taekyung",
         "connection.password": "rlaxorud",
         "auto.create":"true",
