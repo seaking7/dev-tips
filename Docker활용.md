@@ -34,8 +34,10 @@ ENTRYPOINT ["java", "-jar", "Discovery.jar"]
 
 # Dockerfile 작성문법
 FROM baseImage      //베이스 이미지
+ENV GOPATH $GOPATH:/go/src   //환경변수 선언
 RUN command         //추가적으로 필요한 파일 다운로드
-CMD ["executable"]  //컨테이너 시작시 실행 명령어
+CMD ["echo", "hello"]  //컨테이너 시작시 실행 명령어
+EXPOSE 9000   //Port를 외부로 mapping
 
 # Docker build
 C:\workspace\sc-discovery>docker build --tag seaking7/sc-discovery:1.0 .

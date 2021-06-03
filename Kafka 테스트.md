@@ -28,7 +28,7 @@ bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic quickstar
 
 bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic contents
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic execute-log
 
 bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic quickstart-events
 
@@ -41,7 +41,7 @@ Topic: quickstart-events        PartitionCount: 1       ReplicationFactor: 1    
 bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-events
 
 # Consumer 실행
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-events --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic executeLog --from-beginning
 
 
 
@@ -101,7 +101,7 @@ http://52.79.165.211:8083/connectors/my-source-connect/status
 # consumer 확인
 /kafka_2.13-2.7.0$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my_topic_users --from-beginning
 
-
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic execute-log --from-beginning
 
 # 토픽 변경사항 my_topic_users 테이블에 반영
 http://52.79.165.211:8083/connectors 으로 POST메소드 호출
@@ -145,13 +145,29 @@ http://13.209.136.250:8083/connectors/ 으로 POST메소드 호출
     "name":"my-content-sink-connect",
     "config": {
         "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
-        "connection.url" : "jdbc:mysql://13.209.136.250:3306/execute",
-        "connection.user": "taekyung",
+        "connection.url" : "jdbc:mysql://upluscontent.cjmsvgbvsuyy.ap-northeast-2.rds.amazonaws.com:3306/execute",
+        "connection.user": "admin",
         "connection.password": "rlaxorud",
         "auto.create":"true",
         "auto.evolve": "true",
         "delete.enabled" : "false",
         "tasks.max": "1",
         "topics": "contents"
+    }
+}
+
+
+{
+    "name":"my-executelog-sink-connect",
+    "config": {
+        "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://100.51.0.140:3306/report",
+        "connection.user": "taekyung",
+        "connection.password": "rlaxorud",
+        "auto.create":"true",
+        "auto.evolve": "true",
+        "delete.enabled" : "false",
+        "tasks.max": "1",
+        "topics": "executeLog"
     }
 }

@@ -22,3 +22,7 @@ Query OK, 0 rows affected (0.000 sec)
 [mysql]> flush privileges;
 Query OK, 0 rows affected (0.000 sec)
 
+
+
+# RDS사용시 활용
+- charset이 디폴트값이 latin 이므로, 파라미터그룹을 하나 생성해서 utf8로 변경필요
