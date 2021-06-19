@@ -36,18 +36,56 @@ sudo /etc/init.d/rabbitmq-server restart
 
 
 # Docker 설치
-ubuntu@ip-100-51-0-140:~$ sudo apt-get install docker.io
+sudo apt-get install docker.io
 
 -- /usr/bin/docker.io 실행 파일을 /usr/local/bin/docker로 링크하여 사용
 sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
 
- sudo docker pull seaking7/sc-discovery:1.0
-
 
 # Docker 권한부여
-$ sudo usermod -a -G docker $USER
-$ sudo service docker restart
+sudo usermod -a -G docker $USER
+sudo service docker restart
 
 
 # Zipkin 설치
 ~/zipkin$ curl -sSSL https://zipkin.io/quickstart.sh | bash -s
+
+
+
+# Grapana 설치
+Selecting previously unselected package grafana.
+(Reading database ... 146758 files and directories currently installed.)
+Preparing to unpack grafana_7.5.7_amd64.deb ...
+Unpacking grafana (7.5.7) ...
+Setting up grafana (7.5.7) ...
+Adding system user `grafana' (UID 115) ...
+Adding new user `grafana' (UID 115) with group `grafana' ...
+Not creating home directory `/usr/share/grafana'.
+### NOT starting on installation, please execute the following statements to configure grafana to start automatically using systemd
+ sudo /bin/systemctl daemon-reload
+ sudo /bin/systemctl enable grafana-server
+### You can start grafana-server by executing
+ sudo /bin/systemctl start grafana-server
+Processing triggers for systemd (245.4-4ubuntu3.6) ...
+
+
+
+# 실행쉘 참고
+#!/bin/bash
+
+PROCESS=sd-content
+CLASSPATH=/home/ubuntu/${PROCESS}/${PROCESS}-1.0.jar;
+export CLASSPATH
+
+count=$(ps -ef | grep "app.name=$PROCESS" | grep -v grep | grep -v tail | wc -l)
+if [ $count -eq 1 ]
+then
+        p_string=$(ps -ef | grep "app.name=$PROCESS" | grep -v grep | grep -v tail)
+        pid=$(echo $p_string | awk '{print $2}')
+        kill -9 $pid
+        echo "$PROCESS is killed"
+        sleep 3
+fi
+
+java -cp $CLASSPATH -Dprocess_id=$PROCESS -Dapp.name=$PROCESS -jar ${PROCESS}-1.0.jar >> log/${PROCESS}.log &
+echo "$PROCESS is started."

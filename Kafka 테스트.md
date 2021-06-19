@@ -171,3 +171,39 @@ http://13.209.136.250:8083/connectors/ 으로 POST메소드 호출
         "topics": "executeLog"
     }
 }
+
+
+
+# private network DB로 변경
+http://13.209.136.250:8083/connectors/ 으로 POST메소드 호출
+{
+    "name":"my-content-sink-connect",
+    "config": {
+        "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://upluscontent.cjmsvgbvsuyy.ap-northeast-2.rds.amazonaws.com:3306/execute",
+        "connection.user": "admin",
+        "connection.password": "rlaxorud",
+        "auto.create":"true",
+        "auto.evolve": "true",
+        "delete.enabled" : "false",
+        "tasks.max": "1",
+        "topics": "contents"
+    }
+}
+
+
+{
+    "name":"my-executelog-sink-connect",
+    "config": {
+        "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://100.51.101.67:3306/reportdb",
+        "connection.user": "report",
+        "connection.password": "rlaxorud",
+        "auto.create":"true",
+        "auto.evolve": "true",
+        "delete.enabled" : "false",
+        "tasks.max": "1",
+        "topics": "executeLog"
+    }
+}
+

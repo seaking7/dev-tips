@@ -123,3 +123,82 @@ PS C:\Users\User> docker network inspect ecommerce-network
 docker run -d -p 8761:8761 --network ecommerce-network \
  -e "spring.cloud.config.uri=http://config-service:8888" \
  --name discovery-service edowon0623/discovery-service:1.0
+
+
+ # discovery Docker 실행
+docker run -d -p 8761:8761 
+ -e "spring.cloud.config.uri=http://100.51.0.209:8888"  \
+ -e "spring.profiles.active=peer1"  \
+ --name discovery-service seaking7/discovery-service:1.0
+
+
+ docker build -t seaking7/discovery-service:1.0 .
+docker push seaking7/discovery-service:1.0
+docker pull seaking7/discovery-service:1.0
+
+docker run -d -p 8761:8761 -e "spring.cloud.config.uri=http://100.51.0.209:8888" -e "spring.profiles.active=peer1"  --name discovery seaking7/discovery-service:1.0
+
+docker run -f discovery
+
+# apiGateway Docker 실행
+docker build -t seaking7/gateway-service:1.0 .
+docker push seaking7/gateway-service:1.0
+docker pull seaking7/gateway-service:1.0
+
+docker run -d -p 8000:8000 -e "spring.cloud.config.uri=http://100.51.0.209:8888" -e "spring.profiles.active=prod"  --name apigateway seaking7/gateway-service:1.0
+
+docker run -f discovery
+
+
+# content Docker 실행
+docker build -t seaking7/content-service:1.0 .
+docker push seaking7/content-service:1.0
+docker pull seaking7/content-service:1.0
+
+
+docker run -d --net host \
+        -e "spring.cloud.config.uri=http://100.51.0.209:8888" \
+        -e "spring.profiles.active=prod" \
+        -e "eureka.instance.hostname=$HOSTIP" \
+        -e "logging.file=/home/ubuntu/log/content1.log" \
+        --name content \
+        -v /home/ubuntu/log:/home/ubuntu/log \
+        --log-driver=awslogs \
+        --log-opt awslogs-region=ap-northeast-2 \
+        --log-opt awslogs-group=contentLog \
+        --log-opt awslogs-stream=content1 \
+        seaking7/content-service:1.0
+
+
+# execute Docker 실행
+docker build -t seaking7/execute-service:1.0 .
+docker push seaking7/execute-service:1.0
+docker pull seaking7/execute-service:1.0
+
+docker run -d --net host \
+        -e "spring.cloud.config.uri=http://100.51.0.209:8888" \
+        -e "spring.profiles.active=prod" \
+        -e "eureka.instance.hostname=$HOSTIP" \
+        --name execute \
+        --log-driver=awslogs \
+        --log-opt awslogs-region=ap-northeast-2 \
+        --log-opt awslogs-group=executeLog \
+        --log-opt awslogs-stream=execute1 \
+        seaking7/execute-service:1.0
+
+
+# report Docker 실행
+docker build -t seaking7/report-service:1.0 .
+docker push seaking7/report-service:1.0
+docker pull seaking7/report-service:1.0
+
+docker run -d --net host \
+        -e "spring.cloud.config.uri=http://100.51.0.209:8888" \
+        -e "spring.profiles.active=prod" \
+        -e "eureka.instance.hostname=$HOSTIP" \
+        --name report \
+        --log-driver=awslogs \
+        --log-opt awslogs-region=ap-northeast-2 \
+        --log-opt awslogs-group=reportLog \
+        --log-opt awslogs-stream=report1 \
+        seaking7/report-service:1.0
