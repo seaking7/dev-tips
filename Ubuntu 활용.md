@@ -4,12 +4,12 @@
 sudo apt install openjdk-11-jdk
 
 # 한국시간으로 변경
-$ sudo rm /etc/localtime
-$ sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+sudo rm /etc/localtime
+sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 
 sudo hostnamectl set-hostname sc-config-service
-sudo hostnamectl set-hostname content-service
+sudo hostnamectl set-hostname content2
 
 저장후 sudo reboot
 

@@ -8,3 +8,18 @@
 
 
 mvnw clean compile package -DskipTests=true
+
+
+
+
+# Eureka
+
+http -j GET http://100.51.0.209:8761/eureka/apps/  
+
+ http  DELETE http://100.51.0.209:8761/eureka/apps/CONTENT-SERVICE/content-service:eef1f9d43acdf02bf665018422cc6996
+
+ http PUT http://100.51.0.209:8761/eureka/apps/CONTENT-SERVICE/content-service:eef1f9d43acdf02bf665018422cc6996/status?value=OUT_OF_SERVICE
+
+ http PUT http://100.51.0.209:8761/eureka/apps/CONTENT-SERVICE/content-service:eef1f9d43acdf02bf665018422cc6996/status?value=DOWN
+
+ http PUT http://100.51.0.209:8761/eureka/apps/CONTENT-SERVICE/content-service:eef1f9d43acdf02bf665018422cc6996/status?value=UP

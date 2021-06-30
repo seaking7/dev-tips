@@ -202,3 +202,16 @@ docker run -d --net host \
         --log-opt awslogs-group=reportLog \
         --log-opt awslogs-stream=report1 \
         seaking7/report-service:1.0
+
+
+# rabbit mq 
+
+docker run -d --name rabbitmq --net host \ 
+ -e RABBITMQ_DEFAULT_USER=guest \
+ -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
+
+ 
+# config Docker 실행
+docker build -t seaking7/config-service:1.0 .
+docker push seaking7/config-service:1.0
+docker pull seaking7/config-service:1.0
