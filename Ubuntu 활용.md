@@ -36,6 +36,8 @@ sudo /etc/init.d/rabbitmq-server restart
 
 
 # Docker 설치
+sudo apt-get upgrade
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable edge test"
 sudo apt-get install docker.io
 
 -- /usr/bin/docker.io 실행 파일을 /usr/local/bin/docker로 링크하여 사용

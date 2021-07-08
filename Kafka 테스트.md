@@ -99,7 +99,7 @@ http://52.79.165.211:8083/connectors/my-source-connect/status
 /kafka_2.13-2.7.0$ bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 
 # consumer 확인
-/kafka_2.13-2.7.0$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my_topic_users --from-beginning
+/kafka_2.13-2.7.0$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic executeLog --from-beginning
 
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic execute-log --from-beginning
 
