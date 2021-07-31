@@ -207,3 +207,36 @@ http://13.209.136.250:8083/connectors/ 으로 POST메소드 호출
     }
 }
 
+
+# GCP sink 생성
+http://34.64.215.186:8083/connectors/ 으로 POST메소드 호출
+{
+    "name":"my-content-sink-connect",
+    "config": {
+        "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://100.51.0.2:3306/execute",
+        "connection.user": "execute",
+        "connection.password": "rlaxorud",
+        "auto.create":"true",
+        "auto.evolve": "true",
+        "delete.enabled" : "false",
+        "tasks.max": "1",
+        "topics": "contents"
+    }
+}
+
+
+{
+    "name":"my-executelog-sink-connect",
+    "config": {
+        "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://100.51.0.2:3306/report",
+        "connection.user": "report",
+        "connection.password": "rlaxorud",
+        "auto.create":"true",
+        "auto.evolve": "true",
+        "delete.enabled" : "false",
+        "tasks.max": "1",
+        "topics": "executeLog"
+    }
+}
