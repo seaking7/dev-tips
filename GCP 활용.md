@@ -60,3 +60,6 @@ gcloud compute instances create privatenet-us-vm --zone=us-central1-c --machine-
 
 # cloud shell에서 vm으로 접속
 gcloud compute ssh vm-internal --zone us-central1-c --tunnel-through-iap
+
+
+
