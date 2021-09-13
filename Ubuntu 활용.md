@@ -91,3 +91,12 @@ fi
 
 java -cp $CLASSPATH -Dprocess_id=$PROCESS -Dapp.name=$PROCESS -jar ${PROCESS}-1.0.jar >> log/${PROCESS}.log &
 echo "$PROCESS is started."
+
+
+
+# 신규유저
+sudo useradd -s /bin/bash -m -d /home/taekyung -g root taekyung
+sudo passwd taekyung
+sudo chmod u+w /etc/sudoers
+sudo vi /etc/sudoers    마지막 라인에  taekyung ALL=(ALL:ALL) ALL
+sudo vi /etc/ssh/sshd_config    PasswordAuthentication yes
