@@ -108,6 +108,7 @@ echo "$PROCESS is started."
 
 
 
+<<<<<<< HEAD
 # Python elasticsearch 설치
 sudo apt-get update
 sudo apt install python3
@@ -115,3 +116,11 @@ sudo apt install python3-pip
 pip3 install elasticsearch
 
 
+=======
+# 신규유저
+sudo useradd -s /bin/bash -m -d /home/taekyung -g root taekyung
+sudo passwd taekyung
+sudo chmod u+w /etc/sudoers
+sudo vi /etc/sudoers    마지막 라인에  taekyung ALL=(ALL:ALL) ALL
+sudo vi /etc/ssh/sshd_config    PasswordAuthentication yes
+>>>>>>> e39b297757ab8157cde09bfe2312c6d3e5d86208
